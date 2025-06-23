@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             margin: 0;
             background-color: #fcfdfd;
         }
+
         .login-container {
             background-color: rgb(253, 253, 253);
             padding: 2rem;
@@ -22,20 +24,24 @@
             width: 100%;
             max-width: 400px;
         }
+
         .login-container h1 {
             text-align: center;
             margin-bottom: 1.5rem;
             color: #3d3c3c;
         }
+
         .login-form {
             display: flex;
             flex-direction: column;
         }
+
         .login-form label {
             margin-bottom: 0.5rem;
             font-weight: bold;
             color: #2a2a2a;
         }
+
         .login-form input {
             padding: 0.75rem;
             margin-bottom: 1rem;
@@ -43,6 +49,7 @@
             border-radius: 4px;
             font-size: 1rem;
         }
+
         .login-form button {
             padding: 0.75rem;
             background-color: #4782c1;
@@ -52,31 +59,51 @@
             cursor: pointer;
             font-size: 1rem;
         }
+
         .login-form button:hover {
             background-color: #0056b3;
         }
+
         .links {
             text-align: center;
             margin-top: 1rem;
         }
+
         .links a {
             color: #007bff;
             text-decoration: none;
             margin: 0 0.5rem;
         }
+
         .links a:hover {
             text-decoration: underline;
         }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: green;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <h1>Login to Urban Company</h1>
+        <div id="message"></div>
         <form class="login-form" id="loginForm">
             <label for="emailOrPhone">Email or Phone</label>
             <input type="text" id="emailOrPhone" name="emailOrPhone" placeholder="Enter email or phone" required>
+
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Enter password" required>
+
             <button type="submit">Login</button>
         </form>
         <div class="links">
@@ -87,14 +114,30 @@
     </div>
 
     <script>
-        // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // Hardcoded login credentials
+        const validUsername = "neha";
+        const validPassword = "12345";
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
+
             const emailOrPhone = document.getElementById('emailOrPhone').value;
             const password = document.getElementById('password').value;
-            console.log('Login attempt:', { emailOrPhone, password });
-            alert('Login submitted! Check console for details.');
+
+            const messageDiv = document.getElementById('message');
+
+            if (emailOrPhone === validUsername && password === validPassword) {
+                messageDiv.innerHTML = '<p class="success-message">Successfully logged in!</p>';
+                
+                // Redirect to home page after 1 second
+                setTimeout(function () {
+                    window.location.href = 'index.html'; // Change this to your home page URL
+                }, 1000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-message">Incorrect username or password. Please try again.</p>';
+            }
         });
     </script>
 </body>
+
 </html>
