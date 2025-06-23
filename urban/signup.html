@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Company - Sign Up</title>
+    <link rel="stylesheet" href="signuo-style.css" />
+</head>
+<body>
+    <div class="signup-container">
+        <h1>Create Your Urban Company Account</h1>
+        <form class="signup-form" id="signupForm">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter full name" required aria-label="Full name">
+            <div class="error-message" id="fullNameError">Please enter your full name.</div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter email" required aria-label="Email address">
+            <div class="error-message" id="emailError">Please enter a valid email address.</div>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" required aria-label="Phone number">
+            <div class="error-message" id="phoneError">Please enter a valid 10-digit phone number.</div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password (min 8 characters)" required aria-label="Password">
+            <div class="error-message" id="passwordError">Password must be at least 8 characters long.</div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required aria-label="Confirm password">
+            <div class="error-message" id="confirmPasswordError">Passwords do not match.</div>
+            <label for="address">Address (Optional)</label>
+            <input type="text" id="address" name="address" placeholder="Enter address" aria-label="Address (optional)">
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="links">
+            <a href="index.html" aria-label="Return to home page">Back to Home</a>
+            <span>|</span>
+            <a href="login.html" aria-label="Go to login page">Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form inputs
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const address = document.getElementById('address').value.trim();
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => error.classList.remove('show'));
+            document.querySelectorAll('input').forEach(input => input.classList.remove('error'));
+
+            let isValid = true;
+
+            // Validate full name
+            if (!fullName) {
+                document.getElementById('fullNameError').classList.add('show');
+                document.getElementById('fullName').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.add('show');
+                document.getElementById('email').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate phone (10 digits)
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.add('show');
+                document.getElementById('phone').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate password (min 8 characters)
+            if (password.length < 8) {
+                document.getElementById('passwordError').classList.add('show');
+                document.getElementById('password').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').classList.add('show');
+                document.getElementById('confirmPassword').classList.add('error');
+                isValid = false;
+            }
+
+            // If valid, log data and proceed
+            if (isValid) {
+                console.log('Sign Up attempt:', { fullName, email, phone, password, address });
+                alert('Sign Up submitted! Check console for details.');
+                // Add actual signup logic here (e.g., API call)
+            }
+        });
+    </script>
+</body>
+</html>
