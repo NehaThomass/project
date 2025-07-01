@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Company - Login</title>
+    <link rel="stylesheet" href="signup-style.css">
+    <style>
+        .error-message { color: red; text-align: center; }
+        .success-message { color: green; text-align: center; }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Login to Urban Company</h1>
+        <div id="message"></div>
+        <form class="login-form" id="loginForm">
+            <label for="emailOrPhone">Email</label>
+            <input type="text" id="emailOrPhone" name="emailOrPhone" placeholder="Enter email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+            <button type="submit" id="loginButton">Login</button>
+        </form>
+
+        <div class="links">
+            <a href="index.html">Back to Home</a> | <a href="signup.html">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('emailOrPhone').value.trim();
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+            const loginButton = document.getElementById('loginButton');
+
+            loginButton.disabled = true;
+            loginButton.textContent = 'Logging in...';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                console.log('Response status:', response.status);
+                console.log('Response data:', data);
+
+                if (response.ok) {
+                    messageDiv.innerHTML = '<p class="success-message">Successfully logged in!</p>';
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+                } else {
+                    // ❗️Make sure to show the message from the backend here
+                    messageDiv.innerHTML = `<p class="error-message">${data.message || 'Invalid email or password.'}</p>`;
+                    loginButton.disabled = false;
+                    loginButton.textContent = 'Login';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.innerHTML = '<p class="error-message">An error occurred. Please try again.</p>';
+                loginButton.disabled = false;
+                loginButton.textContent = 'Login';
+            }
+        });
+    </script>
+</body>
+
+</html>
